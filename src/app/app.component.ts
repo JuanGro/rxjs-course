@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class AppComponent {
   title = 'rxjs-course';
-  mySubject$ = new Subject();
+  mySubject$ = new BehaviorSubject(200);
 
   ngOnInit() {
     this.mySubject$;
