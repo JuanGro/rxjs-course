@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { interval, take, map } from 'rxjs';
+import { interval, take, map, filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,8 @@ export class AppComponent {
     numbers$
       .pipe(
         take(5),
-        map(x => x * 2)
+        map(x => x * 2),
+        filter(x => x < 3)
       )
       .subscribe((x: any) => console.log(x));
   }
