@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { interval, take } from 'rxjs';
+import { interval, take, map } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +10,14 @@ export class AppComponent {
   title = 'rxjs-course';
 
   ngOnInit() {
-    const numbers$ = interval(1000).pipe(take(5));
+    const numbers$ = interval(1000);
 
-    numbers$.subscribe((x: any) => console.log(x));
+    numbers$
+      .pipe(
+        take(5),
+        map(x => x * 2)
+      )
+      .subscribe((x: any) => console.log(x));
   }
 
   ngOnDestroy() {
