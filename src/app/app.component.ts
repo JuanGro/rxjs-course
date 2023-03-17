@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { interval, take, map, of, switchMap } from 'rxjs';
+import { interval, take, map, of, switchMap, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +10,7 @@ export class AppComponent {
   title = 'rxjs-course';
 
   ngOnInit() {
-    const numbers$ = interval(1000);
-    const letters$ = of('a', 'b', 'c', 'd', 'e');
-
-    letters$.pipe(
-      switchMap(x =>
-        numbers$.pipe(
-          take(5),
-          map(i => i + x)
-        ))
-    ).subscribe(x => console.log(x));
+    fromEvent(document, 'click').subscribe(x => console.log(x));
   }
 
   ngOnDestroy() {
