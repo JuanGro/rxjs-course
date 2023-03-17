@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { interval, take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,19 +8,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AppComponent {
   title = 'rxjs-course';
-  mySubject$ = new BehaviorSubject(200);
 
   ngOnInit() {
-    this.mySubject$;
-    this.mySubject$.subscribe(x => console.log('first subscribe', x));
-    this.mySubject$.next(1);
-    this.mySubject$.next(2);
-    // this.mySubject$.complete();
-    this.mySubject$.subscribe(x => console.log('second subscribe', x));
-    this.mySubject$.next(3);
+    const numbers$ = interval(1000).pipe(take(5));
+
+    numbers$.subscribe((x: any) => console.log(x));
   }
 
   ngOnDestroy() {
-    this.mySubject$.unsubscribe();
   }
 }
