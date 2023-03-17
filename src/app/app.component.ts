@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,25 @@ export class AppComponent {
   title = 'rxjs-course';
   searchString = "";
   searchSubject$ = new Subject<string>();
+  results$!: Observable<any>;
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.searchSubject$.pipe(
-        debounceTime(2000)
+    this.results$ = this.searchSubject$.pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        tap(x => console.log('do', x)),
+        switchMap(searchString => this.queryAPI(searchString))
       )
-      .subscribe((x: any) => console.log('debounced: ', x));
+  }
+
+  queryAPI(searchString: string) {
+    console.log('queryAPI', searchString);
+    return this.http.get(`http://www.reddit.com/r/aww/search.json?q=${searchString}`)
+      .pipe(
+        map((result: any) => result['data']['children'])
+      );
   }
 
   inputChanged($event: any) {
